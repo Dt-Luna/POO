@@ -4,3 +4,4 @@ Bem-vindo(a) ao Python
 Python'''
 
 s = input('Digite uma frase:\n')
+print(s[s.rindex(" ")+1: ])
