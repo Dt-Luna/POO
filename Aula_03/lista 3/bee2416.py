@@ -1,0 +1,5 @@
+t = input()
+t = t.split()
+c = int(t[0])
+n = int(t[1])
+print(c%n)
