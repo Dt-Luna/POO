@@ -1,0 +1,7 @@
+t = input()
+t = t.split()
+t[0] = int(t[0])
+t[1] = int(t[1])
+t[2] = int(t[2])
+t[3] = int(t[3])
+print(t[0] + t[1] + t[2] + t[3] - 3)
