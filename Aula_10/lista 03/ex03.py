@@ -22,4 +22,8 @@ class segundograu:
         if self.delta<0: False
         else: True
     def raiz1(self):
-        return (-self.__b + self.__delta**0.5)/
+        return (-self.__b + self.__delta**0.5)/2*self.__a
+    def raiz2(self):
+        return (-self.__b - self.__delta**0.5)/2*self.__a
+    def __str__(self):
+        return f""
