@@ -33,15 +33,19 @@ class PaisUI:
     
     @classmethod
     def main(cls):
-        opcao = 0
-        while opcao != 7:
+        opcao = '0'
+        while True:
             opcao = PaisUI.menu()
-            if opcao == 1: PaisUI.inserir()
-            if opcao == 2: PaisUI.listar()
-            if opcao == 3: PaisUI.atualizar()
-            if opcao == 4: PaisUI.excluir()
-            if opcao == 5: PaisUI.mais_populuso()
-            if opcao == 6: PaisUI.mais_povoado()
+            if opcao == '1': PaisUI.inserir()
+            elif opcao == '2': PaisUI.listar()
+            elif opcao == '3': PaisUI.atualizar()
+            elif opcao == '4': PaisUI.excluir()
+            elif opcao == '5': PaisUI.mais_populoso()
+            elif opcao == '6': PaisUI.mais_povoado()
+            elif opcao == '7': 
+                print('Encerrando')
+                break
+            else: print('Valor inválido. Tente novamente')
 
     @classmethod
     def inserir(cls):
@@ -53,47 +57,78 @@ class PaisUI:
 
     @classmethod    
     def listar(cls):
-        for p in cls.__paises:
-            print(p)      
+        if not cls.__paises:
+            print('Não há países registrados\n')
+        else:
+            for p in cls.__paises:
+                print(f'{p}\n')      
 
     @classmethod    
     def atualizar(cls):
-        n = int(input('Informe o nome do país a ser atualizado: '))
-        print('Digite 0 para manter as informações')
-        for p in cls.__paises:
-            if p.get_nome() == n:
-                n = input('Digite o novo nome: ')
-                if n != "0":
-                    p.set_nome(n)
-                po = input('Digite a nova população: ')
-                if po != "0":
-                    p.set_populacao(po)
-                ar = input('Digite o novo telefone: ')
-                if ar != "0":
-                    p.set_area(ar)
+        if not cls.__paises:
+            print('Não há países registrados\n')
+        else:
+            try:
+                n = input('Informe o nome do país a ser atualizado: ')
+                print('Digite M para manter as informações')
+                for p in cls.__paises:
+                    if p.get_nome() == n:
+                        encontrado = True
+                        n = input('Digite o novo nome: ')
+                        if n != "M":
+                            p.set_nome(n)
+                        po = input('Digite a nova população: ')
+                        if po != "M":
+                            po = int(po)
+                            print(type(po))
+                            p.set_populacao(po)
+                        ar = input('Digite a nova área: ')
+                        if ar != "M":
+                            ar = int(ar)
+                            p.set_area(ar)
+                    else: encontrado = False
+                if not encontrado: print('País não encontrado')
+            except ValueError:
+                print('Informações inválidas')
             
     @classmethod    
     def excluir(cls):
-        n = int(input('Informe o nome do país a ser atualizado: '))
-        for p in cls.__contatos:
-            if p.get_nome() == n:
-                cls.__paises.remove(p)
+        if not cls.__paises:
+            print('Não há países registrados\n')
+        else:
+            try:
+                n = input('Informe o nome do país a ser excluído: ')
+                for p in cls.__paises:
+                    if p.get_nome() == n:
+                        encontrado = True
+                        cls.__paises.remove(p)
+                    else: encontrado = False
+                if not encontrado: print('País não encontrado')
+            except ValueError:
+                print('Informações inválidas')
 
     @classmethod
-    def mais_populuso(cls):
-        mais = 0
-        for p in cls.__paises:
-            if p.__densidade > mais:
-                mais = p.__densidade
-        return mais
+    def mais_populoso(cls):
+        if not cls.__paises:
+            print('Não há países registrados\n')
+        else:
+            mais_populoso = cls.__paises[0]
+            for p in cls.__paises[1:]:
+                if p.get_populacao() > mais_populoso.get_populacao():
+                    mais_populoso = p
+            print(f'O país mais populoso é {mais_populoso.get_nome()}')
     
     @classmethod
     def mais_povoado(cls):
-        mais = 0
-        for p in cls.__paises:
-            if p.__populacao > mais:
-                mais = p.__populacao
-        return mais
+        if not cls.__paises:
+            print('Não há países registrados\n')
+        else:
+            mais_povoado = cls.__paises[0]
+            for p in cls.__paises[1:]:
+                if p.densidade() > mais_povoado.densidade():
+                    mais_povoado = p
+            print(f'O país mais povoado é {mais_povoado.get_nome()}')   
     
 PaisUI.main()
+
 

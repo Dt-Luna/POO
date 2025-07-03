@@ -15,6 +15,7 @@ class Bingo:
     def sortear(self):
         if len(self.__bolas) == self.__num_bolas:
             print('Todas as bolas sorteadas')
+            return #
         else:
             s = randint(1, self.__num_bolas)
             while s in self.__bolas:
@@ -24,7 +25,7 @@ class Bingo:
             print(self.__sorteado)
 
     def sorteados(self):
-        return self.__bolas
+        return sorted(self.__bolas)
 
 class BingoUI:
     @staticmethod
@@ -59,14 +60,15 @@ class BingoUI:
     @staticmethod
     def iniciar_jogo():
         b = int(input('Quanta bolas tem a partida: '))
-        BingoUI.x = Bingo(b)
+        jogo = Bingo(b)
+        return jogo
 
     @staticmethod
-    def sortear():
-        BingoUI.x.sortear()
+    def sortear(jogo):
+        jogo.sortear()
 
     @staticmethod
-    def sorteados():
+    def sorteados(jogo):
         BingoUI.xsorteados = BingoUI.x.sorteados()
         print('Números sorteados: ')
         for i in BingoUI.xsorteados:
