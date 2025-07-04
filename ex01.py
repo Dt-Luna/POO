@@ -15,26 +15,27 @@ class Bingo:
     def sortear(self):
         if len(self.__bolas) == self.__num_bolas:
             print('Todas as bolas sorteadas')
-            return #
+            return -1
         else:
             s = randint(1, self.__num_bolas)
             while s in self.__bolas:
                 s = randint(1, self.__num_bolas)
             self.set_sorteado(s)
             self.__bolas.append(self.__sorteado)
-            print(self.__sorteado)
+            return(self.__sorteado)
 
     def sorteados(self):
         return sorted(self.__bolas)
 
 class BingoUI:
-    @staticmethod
-    def menu():
+    __jogo_em_andamento = False
+    @classmethod
+    def menu(cls):
         print('1 - Iniciar novo jogo\n2 - Sortear\n3 - Verificar sorteados\n4 - Sair')
         opcao = int(input('Selecione uma opção: '))
         return opcao
-    @staticmethod
-    def main():
+    @classmethod
+    def main(cls):
         while True:
             opcao = BingoUI.menu()
             if opcao == 1:
@@ -46,32 +47,30 @@ class BingoUI:
             if opcao == 4:
                 print('Encerrando')
                 break
-            # match opcao:
-            #     case 1:
-            #         BingoUI.iniciar_jogo()
-            #     case 2:
-            #         BingoUI.sortear()
-            #     case 3:
-            #         BingoUI.sorteados()
-            #     case 4:
-            #         print('Encerrando')
-            #         break
 
-    @staticmethod
-    def iniciar_jogo():
+    @classmethod
+    def iniciar_jogo(cls):
         b = int(input('Quanta bolas tem a partida: '))
-        jogo = Bingo(b)
-        return jogo
+        cls.jogo = Bingo(b)
+        cls.__jogo_em_andamento = True
+        return cls.jogo
 
-    @staticmethod
-    def sortear(jogo):
-        jogo.sortear()
+    @classmethod
+    def sortear(cls):
+        # jogo = x'
+        if cls.__jogo_em_andamento:
+            print(cls.jogo.sortear())
+        else:
+            print('Não há nenhum jogo em andamento')
 
-    @staticmethod
-    def sorteados(jogo):
-        BingoUI.xsorteados = BingoUI.x.sorteados()
-        print('Números sorteados: ')
-        for i in BingoUI.xsorteados:
-            print(i)
+    @classmethod
+    def sorteados(cls):
+        if cls.__jogo_em_andamento:
+            # jogo_sorteados = cls.jogo.sorteados()
+            print('Números sorteados: ')
+            for i in cls.jogo.sorteados():
+                print(i)
+        else:
+            print('Não há nenhum jogo em andamento')
 
 BingoUI.main()
