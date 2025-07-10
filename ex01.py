@@ -29,13 +29,13 @@ class Bingo:
 
 class BingoUI:
     __jogo_em_andamento = False
-    @classmethod
-    def menu(cls):
+    @staticmethod
+    def menu():
         print('1 - Iniciar novo jogo\n2 - Sortear\n3 - Verificar sorteados\n4 - Sair')
         opcao = int(input('Selecione uma opção: '))
         return opcao
-    @classmethod
-    def main(cls):
+    @staticmethod
+    def main():
         while True:
             opcao = BingoUI.menu()
             if opcao == 1:
