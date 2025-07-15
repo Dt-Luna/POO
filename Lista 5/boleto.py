@@ -96,16 +96,16 @@ class BoletoUI:
         else:
             return 0
 
-    @classmethod
-    def main(cls):
+    @staticmethod
+    def main():
         while True:
-            opcao = cls.menu()
+            opcao = BoletoUI.menu()
             if opcao == 1:
-                cls.inserir()
+                BoletoUI.inserir()
             elif opcao == 2:
-                cls.listar()
+                BoletoUI.listar()
             elif opcao == 3:
-                cls.pagar()
+                BoletoUI.pagar()
             elif opcao == 4:
                 print('Saindo...')
                 break
@@ -162,5 +162,4 @@ class BoletoUI:
         except ValueError:
             print('Valor inválido.')
 
-if __name__ == "__main__":
-    BoletoUI.main()
+BoletoUI.main()
