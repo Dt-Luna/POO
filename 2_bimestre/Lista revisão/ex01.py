@@ -13,10 +13,10 @@ class Treino:
         self.__dthora = dt
     
     def set_distancia(self, ds):
-        self.__ds = ds
+        self.__distancia = ds
     
     def set_tempo(self, t):
-        self.__t = t
+        self.__tempo = t
 
     def get_id(self):
         return self.__id
@@ -60,20 +60,28 @@ class TreinoUI:
     @classmethod
     def inserir(cls):
         if not cls.__treinos:
-            id_numero = 0
-        id += id_numero
-        dt = input('Data do treino: ')
-        dt = datetime.datetime.strptime(dt, '%d/%m/%Y %H:%M')
-        ds = float(input('Distância percorrida: '))
-        h, m ,s = map(int, input('Tempo percorrido: ').oplit(':'))
-        t = datetime.timedelta(hours = h, minutes = m, seconds = s)
-        x = Treino(id, dt, ds, t)
-        id_numero += 1
+            cls.id_numero = 0
+        id = cls.id_numero + 1
+        try:
+            dt = input('Data do treino: ')
+            dt = datetime.datetime.strptime(dt, '%d/%m/%Y %H:%M')
+            ds = float(input('Distância percorrida: '))
+            h, m ,s = map(int, input('Tempo percorrido: ').split(':'))
+            t = datetime.timedelta(hours = h, minutes = m, seconds = s)
+            print(t)
+            x = Treino(id, dt, ds, t)
+            cls.__treinos.append(x)
+            cls.id_numero += 1
+        except ValueError:
+            print('Informações inválidas, tente novamente')
 
     @classmethod
     def listar(cls):
-        for t in cls.__treinos:
-            print(t)
+        if not cls.__treinos:
+            print('Nenhum treino cadastrado')
+        else:
+            for t in cls.__treinos:
+                print(t)
 
     @classmethod
     def listar_id(cls):
@@ -84,8 +92,51 @@ class TreinoUI:
 
     @classmethod
     def atualizar(cls):
+        TreinoUI.listar()
         id = int('Id do treino a ser atualizado: ')
+        try:
+            for t in cls.__treinos:
+                if t.get_id() == id:
+                    dthora = input('Nova data: ')
+                    if dthora != 'M':
+                        dthora = datetime.datetime.strptime(dthora, '%d/%m/%Y')
+                        t.set_dthora(dthora)
+                    ds = input('Nova distância: ')
+                    if ds != 'M':
+                        ds = float(ds)
+                        t.set_distancia(ds)
+                    t = input('Digite o tempo: ')
+                    if t != 'M':
+                        t = t.split(':')
+                        t = map(int, t)
+                        t = datetime.timedelta(t[0], t[1], t[2])
+                        t.set_tempo(t)
+        except ValueError:
+            print('Informações inválidas')
+
+    @classmethod
+    def excluir(cls):
+        encontrado = False
+        if not cls.__treinos:
+            print('Não há treinos cadastrados')
+        else:
+            id = int(input('Informe o id: '))
+            for t in cls.__treinos:
+                if t.get_id() == id:
+                    encontrado = True
+                    cls.__treinos.remove(t)
+            if not encontrado:
+                print('Treino não encontrado')
+
+    @classmethod
+    def mais_rapido(cls):
+        mrapido = t[0]
         for t in cls.__treinos:
-            if t.get_id() == id:
+            if t.velocidade() > mrapido.velocidade():
+                mrapido = t
+        return mrapido
+
+
+TreinoUI.main()
                 
         
