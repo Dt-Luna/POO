@@ -34,7 +34,7 @@ class ContatoUI:
     @classmethod    
     def main(cls):
         opcao = 0
-        while opcao != 9:
+        while opcao != 7:
             opcao = ContatoUI.menu()
             if opcao == 1: ContatoUI.inserir()
             if opcao == 2: ContatoUI.listar()
@@ -130,12 +130,12 @@ class ContatoUI:
 
     @classmethod
     def salvar(cls):
-        with open('2_bimestre/LISTA 6/contatos.json', mode='w') as arquivo:
+        with open('2_bimestre/lista 7_contato/contatos.json', mode='w') as arquivo:
             contatos_json = json.dump(cls.__contatos, arquivo, default=vars)
 
     @classmethod
     def abrir(cls):
-        with open('2_bimestre/LISTA 6/contatos.json', mode='r') as arquivo:
+        with open('2_bimestre/lista 7_contato/contatos.json', mode='r') as arquivo:
             contatos_json = json.load(arquivo)
             for obj in contatos_json:
                 contato = Contato(obj['id'], obj['nome'], obj['email'], obj['fone'], obj['aniversario'])
