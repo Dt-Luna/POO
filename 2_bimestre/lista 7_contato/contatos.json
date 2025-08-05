@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nome": "a",
+    "email": "a",
+    "fone": "1",
+    "aniversario": [
+      14,
+      7
+    ]
+  }
+]

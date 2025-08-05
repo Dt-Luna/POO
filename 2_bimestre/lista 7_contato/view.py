@@ -4,11 +4,15 @@ import datetime
 class View:
     @staticmethod
     def contato_inserir(nome, email, fone, aniversario):
-        try:
+        if isinstance(aniversario, str):
+            print(aniversario, type(aniversario))
             aniversario = datetime.datetime.strptime(aniversario, '%d/%m')
-            ContatoDAO.inserir(Contato(0, nome, email, fone, aniversario))
-        except Exception as e:
-            print(f'Erro ao inserir contato: {e}')
+            print(aniversario, type(aniversario))
+        ContatoDAO.inserir(Contato(0, nome, email, fone, aniversario))
+        return True
+        #  except Exception as e:
+        #     print(f'Erro ao inserir contato: {e}')
+        #     return False
     
     @staticmethod
     def contato_listar():

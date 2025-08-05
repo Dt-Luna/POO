@@ -28,7 +28,7 @@ class UI:
         if View.contato_inserir(nome, email, fone, aniversario): print('Contato adicionado com sucesso')
         else: 
             print('Falha ao adicionar contato')
-            # pass
+            
 
     @staticmethod
     def listar():

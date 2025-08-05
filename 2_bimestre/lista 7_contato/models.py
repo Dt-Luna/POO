@@ -8,16 +8,16 @@ class Contato:
         self.fone = f
         self.aniversario = a
     def set_nome(self, n):
-        if len(n)<3:raise ValueError
+        # if len(n)<3:raise ValueError
         self.nome = n     
     def set_email(self, e):
-        if len(e)<5:raise ValueError
+        # if len(e)<5:raise ValueError
         self.email = e     
     def set_fone(self, f):
-        if len(f)<9:raise ValueError
+        # if len(f)<9:raise ValueError
         self.fone = f    
     def set_aniversario(self, a):
-        if type(a) != datetime.date: raise ValueError
+        # if type(a) != datetime.date: raise ValueError
         self.aniversario = a
     
     def get_id(self):
@@ -30,12 +30,12 @@ class Contato:
         return f"{self.id} - {self.nome} - {self.email} - {self.fone} - {self.aniversario}"
     
     def dict(self):
-        return{
+        return {
             'id': self.id,
             'nome': self.nome,
             'email': self.email,
             'fone': self.fone,
-            'aniversario': datetime.datetime.strptime(self.aniversario, '%d/%m')
+            'aniversario': [self.aniversario.day, self.aniversario.month,] 
         }
 
 class ContatoDAO:
@@ -44,7 +44,7 @@ class ContatoDAO:
     @classmethod
     def inserir(cls, obj):
         try:
-            cls.__abrir()
+            # cls.__abrir()
             id = 0
             for aux in cls.__contatos:
                 if aux.id > id: id = aux.id
@@ -114,7 +114,9 @@ class ContatoDAO:
             with open('2_bimestre/lista 7_contato/contatos.json', mode='r') as arquivo:
                 contatos_json = json.load(arquivo)
                 for obj in contatos_json:
-                    # Convertendo string para datetime.date
+                    # print(type(obj))
+                    # Convertendo string para datetime.date 
+                    datetime.datetime(1900, obj['aniversario'][1], obj['aniversario'][0])
                     obj['aniversario'] = datetime.datetime.strptime(obj['aniversario'], '%d/%m')
                     contato = Contato(obj['id'], obj['nome'], obj['email'], obj['fone'], obj['aniversario'])
                     cls.__contatos.append(contato)
