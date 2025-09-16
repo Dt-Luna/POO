@@ -8,24 +8,24 @@ class Contato:
         self.fone = f
         self.aniversario = a
     def set_nome(self, n):
-        # if len(n)<3:raise ValueError
+        if len(n)<3:raise ValueError
         self.nome = n     
     def set_email(self, e):
-        # if len(e)<5:raise ValueError
+        if len(e)<5:raise ValueError
         self.email = e     
     def set_fone(self, f):
-        # if len(f)<9:raise ValueError
+        if len(f)<9:raise ValueError
         self.fone = f    
     def set_aniversario(self, a):
-        # if type(a) != datetime.date: raise ValueError
+        if type(a) != datetime.date: raise ValueError
         self.aniversario = a
     
     def get_id(self):
         return self.id
     def get_aniversario(self):
-        return self.__aniversario
+        return self.aniversario
     def get_nome(self):
-        return self.__nome
+        return self.nome
     def __str__(self):
         return f"{self.id} - {self.nome} - {self.email} - {self.fone} - {self.aniversario}"
     
@@ -50,31 +50,32 @@ class ContatoDAO:
                 if aux.id > id: id = aux.id
             obj.id = id + 1
             cls.__contatos.append(obj)
-            cls.__salvar()
+            cls._salvar()
             return True
         except ValueError:
-            return False
+            return False        
 
     @classmethod
     def listar(cls):
-        cls.__abrir()
+        cls._abrir()
         return cls.__contatos
     
     @classmethod
     def listar_id(cls, id):
-        cls.__abrir()
+        cls._abrir()
         for obj in cls.__objetos:
             if obj.get_id() == id: return obj
 
     @classmethod
     def atualizar(cls, id, nome, email, fone, aniversario):
-        cls.__abrir()
-        for obj in cls.__objetos:
+        cls._abrir()
+        for obj in cls.__contatos:
             if obj.get_id() == id:
                 obj.set_nome(nome)
                 obj.set_email(email)
                 obj.set_fone(fone)
                 obj.set_aniversario(aniversario)
+                cls._salvar()
 
     @classmethod
     def excluir(cls, id):
@@ -82,33 +83,33 @@ class ContatoDAO:
         for c in cls.__contatos:
             if c.get_id() == id:
                 cls.__contatos.remove(c)
-                cls.__salvar()
+                cls._salvar()
                 return True
 
     @classmethod    
     def pesquisar(cls, nome):
-        cls.__abrir()
+        cls._abrir()
         for c in cls.__contatos:
             if c.get_nome().startswith(nome): 
                 return c             
 
     @classmethod
     def aniversariantes(cls, mes):
-        cls.__abrir()
+        cls._abrir()
         for c in cls.__contatos:
             aniversario = c.get_aniversario()
             if aniversario.month == mes.month:
                 return c.get_nome()
 
     @classmethod
-    def __salvar(cls):
+    def _salvar(cls):
         with open('2_bimestre/lista 7_contato/contatos.json', mode='w') as arquivo:
             contatos_json = [c.dict() for c in cls.__contatos]
             json.dump(contatos_json, arquivo, indent=2)
 
 
     @classmethod
-    def __abrir(cls):
+    def _abrir(cls):
         cls.__contatos.clear()
         try:
             with open('2_bimestre/lista 7_contato/contatos.json', mode='r') as arquivo:
@@ -116,8 +117,7 @@ class ContatoDAO:
                 for obj in contatos_json:
                     # print(type(obj))
                     # Convertendo string para datetime.date 
-                    datetime.datetime(1900, obj['aniversario'][1], obj['aniversario'][0])
-                    obj['aniversario'] = datetime.datetime.strptime(obj['aniversario'], '%d/%m')
+                    obj['aniversario'] = datetime.datetime(1900, obj['aniversario'][1], obj['aniversario'][0])
                     contato = Contato(obj['id'], obj['nome'], obj['email'], obj['fone'], obj['aniversario'])
                     cls.__contatos.append(contato)
         except FileNotFoundError:
