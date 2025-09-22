@@ -13,12 +13,12 @@ class Servico:
     def get_desc(self): return self.__desc
     def get_valor(self): return self.__valor
 
-    def to_dict(self):
+    def to_json(self):
         dic = {"id":self.__id, "desc":self.__desc, "valor":self.__valor}
         return dic
     
     @staticmethod
-    def from_dict(dic):
+    def from_json(dic):
         return Servico(dic["id"], dic["desc"], dic["valor"])
     
     def __str__(self):
@@ -77,5 +77,6 @@ class ServicoDAO:
 
     @classmethod
     def salvar(cls):
-        with open("servico.json", mode="w") as arquivo:
+        with open("servicos.json", mode="w") as arquivo:
             json.dump(cls.__objetos, arquivo, default = Servico.to_json)
+            
