@@ -36,11 +36,11 @@ class ManterServicoUI:
         if len(servicos) == 0: st.write('Nenhum serviço cadastrado')
         else:
             op = st.selectbox('Atualização de serviços', servicos)
-            desc = st.text_input('Novo desc', op.get_nome())
+            desc = st.text_input('Novo desc', op.get_desc())
             valor = st.text_input('Novo valor', op.get_valor())
             if st.button('Atualizar'):
                 id = op.get_id()
-                View.cliente_atualizar(id, desc, valor)
+                View.servico_atualizar(id, desc, valor)
                 st.success('Serviço atualizado com sucesso')
 
     def excluir():
