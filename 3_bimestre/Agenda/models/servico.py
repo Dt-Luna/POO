@@ -19,7 +19,7 @@ class Servico:
     
     @staticmethod
     def from_dict(dic):
-        return Servico(dic["id"], dic["desc"], dic"[valor"])
+        return Servico(dic["id"], dic["desc"], dic["valor"])
     
     def __str__(self):
         return f"{self.__id} - {self.__desc} - {self.__valor}"
@@ -40,8 +40,42 @@ class ServicoDAO:
     def listar(cls):
         cls.abrir()
         return cls.__objetos
+    
+    @classmethod
+    def listar_id(cls, id):
+        cls.abrir()
+        for obj in cls.__objetos:
+            if obj.get_id() == id: return obj
+        return None
 
     @classmethod
-
+    def excluir(cls, obj):
+        aux = cls.listar_id(obj.get_id())
+        if aux != None:
+            cls.__objetos.remove(aux)
+            cls.salvar()
+    
     @classmethod
     def atualizar(cls, obj):
+        aux = cls.listar_id(obj.get_id())
+        if aux != None:
+            cls.__objetos.remove(aux)
+            cls.__objetos.append(obj)
+            cls.salvar()
+
+    @classmethod
+    def abrir(cls):
+        cls.__objetos = []
+        try:
+            with open("servicos.json", mode="r") as arquivo:
+                list_dic = json.load(arquivo)
+                for dic in list_dic:
+                    obj = Servico.from_json(dic)
+                    cls.__objetos.append(obj)
+        except FileNotFoundError:
+            pass
+
+    @classmethod
+    def salvar(cls):
+        with open("servico.json", mode="w") as arquivo:
+            json.dump(cls.__objetos, arquivo, default = Servico.to_json)
