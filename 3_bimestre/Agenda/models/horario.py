@@ -38,7 +38,7 @@ class Horario:
         horario.set_id_servico(dic["id_servico"])
         return horario
         
-class ClienteDAO():
+class HorarioDAO():
     __objetos = []
     @classmethod
     def inserir(cls, obj):

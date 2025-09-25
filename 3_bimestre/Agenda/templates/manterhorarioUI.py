@@ -4,18 +4,18 @@ import time
 from views import View
 import datetime
 
-class ManterClienteUI:
+class ManterHorarioUI:
     def main():
         st.header('Cadastro de Horários')
         tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
-        with tab1: ManterClienteUI.listar()
-        with tab2: ManterClienteUI.inserir()
-        with tab3: ManterClienteUI.atualizar()
-        with tab4: ManterClienteUI.excluir()
+        with tab1: ManterHorarioUI.listar()
+        with tab2: ManterHorarioUI.inserir()
+        with tab3: ManterHorarioUI.atualizar()
+        with tab4: ManterHorarioUI.excluir()
     
     def listar():
         horarios = View.cliente_listar()
-        if len(horarios) == 0: st.write('Nenhum cliente cadastrado')
+        if len(horarios) == 0: st.write('Nenhum horário cadastrado')
         else:
             list_dic = []
             for obj in horarios: 
@@ -45,22 +45,30 @@ class ManterClienteUI:
         if len(horarios) == 0: st.write('Nenhum cliente cadastrado')
         else:
             clientes = View.cliente_listar()
-            servico = View
+            servicos = View.servico_listar()
             op = st.selectbox('Atualização de clientes', clientes)
-            nome = st.text_input('Novo nome', op.get_nome())
-            email = st.text_input('Novo email', op.get_email())
-            fone = st.text_input('Novo fone', op.get_fone())
+            data = st.text_input("Informe a nova data e horário do serviço",datetime.now().strftime("%d/%m/%Y %H:%M"))
+            confirmado = st.selectbox('Nova confirmação', op.get_confirmado())
+            id_cliente = None if op.get_id_cliente() in [0, None] else op.get_id_cliente()
+            id_servico = None if op.get_id_servico() in [0, None] else op.get_id_servico()
+            cliente = st.selectbox('Informe o novo cliente', clientes, next((i for i, c in enumerate(clientes) if c.get_id() == id_cliente), None))
+            servico = st.selectbox('Informe o novo servico', servicos, next((i for i, s in enumerate(servicos) if s.get_id() == id_servico), None))
             if st.button('Atualizar'):
-                id = op.get_id()
-                View.cliente_atualizar(id, nome, email, fone)
-                st.success('Cliente atualizado com sucesso')
+                id_cliente = None
+                id_servico = None
+                if cliente != None: id_cliente = cliente.get_id()
+                if servico != None: id_servico = servico.get_id()
+                View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y%H:%M"), confirmado, id_cliente, id_servico)
+                st.success('Horário atualizado com sucesso')
             
     def excluir():
-        clientes = View.cliente_listar()
-        if len(clientes) == 0: st.write('Nenhum cliente cadastrado')
+        horarios = View.horario_listar()
+        if len(horarios) == 0: st.write('Nenhum horário cadastrado')
         else:
-            op = st.selectbox('Exclusão de clientes', clientes)
+            op = st.selectbox('Exclusão de horarios', horarios)
             if st.button('Excluir'):
                 id = op.get_id()
-                View.cliente_excluir(id)
-                st.success('Cliente excluído com sucesso')
+                View.horario_excluir(id)
+                st.success('Horário excluído com sucesso')
+                time.sleep(2)
+                st.rerun()
