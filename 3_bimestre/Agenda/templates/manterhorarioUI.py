@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 from views import View
-import datetime
+from datetime import datetime
 
 class ManterHorarioUI:
     def main():
@@ -14,7 +14,7 @@ class ManterHorarioUI:
         with tab4: ManterHorarioUI.excluir()
     
     def listar():
-        horarios = View.cliente_listar()
+        horarios = View.horario_listar()
         if len(horarios) == 0: st.write('Nenhum horário cadastrado')
         else:
             list_dic = []
@@ -29,11 +29,11 @@ class ManterHorarioUI:
     
     def inserir():
         clientes = View.cliente_listar()
-        servico = View.servico_listar()
+        servicos = View.servico_listar()
         data = st.text_input('Informe a data e o horário do serviço', datetime.now().strftime("%d/%m/%Y %H:%M"))
         confirmado = st.checkbox('Confirmado')
-        cliente = st.selectbox('Informe o cliente'. clientes, Index=None)
-        servico = st.selectbox('Informe o serviço'. servicos, Index=None)
+        cliente = st.selectbox('Informe o cliente', clientes, index=None)
+        servico = st.selectbox('Informe o serviço', servicos, index=None)
         if st.button('Inserir'):
             if cliente != None: id_cliente= cliente.get_id()
             if servico != None: id_servico= servico.get_id()
@@ -41,14 +41,14 @@ class ManterHorarioUI:
             st.success('Horário inserido com sucesso')
 
     def atualizar():
-        horarios = View.cliente_listar()
+        horarios = View.horario_listar()
         if len(horarios) == 0: st.write('Nenhum cliente cadastrado')
         else:
             clientes = View.cliente_listar()
             servicos = View.servico_listar()
-            op = st.selectbox('Atualização de clientes', clientes)
+            op = st.selectbox('Atualização de horários', horarios)
             data = st.text_input("Informe a nova data e horário do serviço",datetime.now().strftime("%d/%m/%Y %H:%M"))
-            confirmado = st.selectbox('Nova confirmação', op.get_confirmado())
+            confirmado = st.checkbox('Nova confirmação', op.get_confirmado())
             id_cliente = None if op.get_id_cliente() in [0, None] else op.get_id_cliente()
             id_servico = None if op.get_id_servico() in [0, None] else op.get_id_servico()
             cliente = st.selectbox('Informe o novo cliente', clientes, next((i for i, c in enumerate(clientes) if c.get_id() == id_cliente), None))
@@ -58,7 +58,7 @@ class ManterHorarioUI:
                 id_servico = None
                 if cliente != None: id_cliente = cliente.get_id()
                 if servico != None: id_servico = servico.get_id()
-                View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y%H:%M"), confirmado, id_cliente, id_servico)
+                View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, id_cliente, id_servico)
                 st.success('Horário atualizado com sucesso')
             
     def excluir():
