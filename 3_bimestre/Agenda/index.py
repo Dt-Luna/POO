@@ -10,11 +10,11 @@ import streamlit as st
 class IndexUI:
     def menu_admin():
         op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes",
-            "Cadastro de Serviços", "Cadastro de Profissionais"])
+            "Cadastro de Serviços","Cadastro de Horários", "Cadastro de Profissionais"])
         if op == "Cadastro de Clientes": ManterClienteUI.main()
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
-        if op == "Cadastro de Profissionais": ManterHorarioUI.main()
+        if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Entrar no Sistema",
         "Abrir Conta"])
@@ -33,8 +33,7 @@ class IndexUI:
             IndexUI.menu_visitante()
         else:
             admin = st.session_state["usuario_nome"] == "admin"
-            st.sidebar.write("Bem-vindo(a), " +
-                st.session_state["usuario_nome"])
+            st.sidebar.write("Bem-vindo(a), " + st.session_state["usuario_nome"])
             if admin: IndexUI.menu_admin()
             else: IndexUI.menu_cliente()
             IndexUI.sair_do_sistema()
