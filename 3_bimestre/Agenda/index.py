@@ -5,6 +5,7 @@ from templates.manterprofissional import ManterProfissionalUI
 from templates.abrircontaUI import AbrirContaUI
 from templates.loginUI import LoginUI
 from templates.perfilclienteUI import PerfilClienteUI
+from templates.perfilprofissionalUI import PerfilProfissionalUI
 from views import View
 import streamlit as st
 class IndexUI:
@@ -16,13 +17,17 @@ class IndexUI:
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
     def menu_visitante():
-        op = st.sidebar.selectbox("Menu", ["Entrar no Sistema",
+        op = st.sidebar.selectbox("Menu", ["Entrar como Cliente", "Entrar como Profissional",
         "Abrir Conta"])
-        if op == "Entrar no Sistema": LoginUI.main()
+        if op == "Entrar como Cliente": LoginUI.cliente()
+        if op == "Entrar como Profissional": LoginUI.profissional()
         if op == "Abrir Conta": AbrirContaUI.main()
     def menu_cliente():
         op = st.sidebar.selectbox("Menu", ["Meus Dados"])
         if op == "Meus Dados": PerfilClienteUI.main()
+    def menu_profissional():
+        op = st.sidebar.selectbox("Menu", ["Meus Dados"])
+        if op == "Meus Dados": PerfilProfissionalUI.main()
     def sair_do_sistema():
         if st.sidebar.button("Sair"):
             del st.session_state["usuario_id"]
@@ -35,7 +40,9 @@ class IndexUI:
             admin = st.session_state["usuario_nome"] == "admin"
             st.sidebar.write("Bem-vindo(a), " + st.session_state["usuario_nome"])
             if admin: IndexUI.menu_admin()
-            else: IndexUI.menu_cliente()
+            else: 
+                if st.session_state["usuario_tipo"] == "c": IndexUI.menu_cliente()
+                elif st.session_state["usuario_tipo"] == "p": IndexUI.menu_profissional()
             IndexUI.sair_do_sistema()
     def main():
         # verifica a existe o usuário admin
