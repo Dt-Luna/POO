@@ -37,12 +37,12 @@ class ManterHorarioUI:
         confirmado = st.checkbox('Confirmado')
         cliente = st.selectbox('Informe o cliente', clientes, index=None)
         servico = st.selectbox('Informe o serviço', servicos, index=None)
-        profissional = st.selectbox('Informe o serviço', profissionais, index=None)
+        profissional = st.selectbox('Informe o profissional', profissionais, index=None)
         if st.button('Inserir'):
-            if cliente != None: id_cliente = cliente.get_id()
-            if servico != None: id_servico = servico.get_id()
-            if profissional != None: id_profissional = profissional.get_id()
-            View.horario_inserir(datetime.strptime(data,"%d/%m/%Y %H:%M"),confirmado, id_cliente, id_servico, id_profissional)
+            if cliente != None: cliente = cliente.get_id()
+            if servico != None: servico = servico.get_id()
+            if profissional != None: profissional = profissional.get_id()
+            View.horario_inserir(datetime.strptime(data,"%d/%m/%Y %H:%M"),confirmado, cliente, servico, profissional)
             st.success('Horário inserido com sucesso')
 
     def atualizar():
@@ -64,10 +64,10 @@ class ManterHorarioUI:
             if st.button('Atualizar'):
                 id_cliente = None
                 id_servico = None
-                if cliente != None: id_cliente = cliente.get_id()
-                if servico != None: id_servico = servico.get_id()
-                if profissional != None: id_profissional = profissional.get_id()
-                View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, id_cliente, id_servico, id_profissional)
+                if cliente != None: cliente = cliente.get_id()
+                if servico != None: servico = servico.get_id()
+                if profissional != None: profissional = profissional.get_id()
+                View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, cliente, servico, profissional)
                 st.success('Horário atualizado com sucesso')
             
     def excluir():
