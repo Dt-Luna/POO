@@ -9,6 +9,7 @@ class View:
         for c in View.cliente_listar():
             if c.get_email() == "admin": return 
         View.cliente_inserir("admin", "admin", "fone", "1234")
+    def cliente_atualizar_senha_admin():
     
     def cliente_autenticar(email, senha):
         for c in View.cliente_listar():
@@ -82,10 +83,10 @@ class View:
         r = [] 
         agora = datetime.datetime.now()
         for h in View.horario_listar():
-            if h.get_data() >= agora and h.get_confirmado() == False and h.get_id_cliente() == None and h.get_id_profissional() == id_profissional:
+            if h.get_data()>= agora and h.get_confirmado() == False and h.get_id_cliente() == None and h.get_id_profissional() == id_profissional:
                 r.append(h)
             r.sort(key = lambda h : h.get_data())
-            return r
+        return r
 
     def profissional_listar():
         r = ProfissionalDAO.listar()
@@ -107,4 +108,16 @@ class View:
         r= []
         for h in View.horario_listar():
             if h.get_id_profissional() == id_profissional:r.append(h) 
-            return r
+        return r
+    def horario_filtrar_cliente(id_cliente):
+        r = []
+        for h in View.horario_listar():
+            if h.get_id_cliente() == id_cliente: r.append(h)
+        return r
+    def profissional_inserir_agenda(id, dia, hora_inicio, hora_final, intervalo):
+        h = datetime.datetime.combine(dia, hora_inicio)
+        fim = datetime.datetime.combine(dia, hora_final)
+        intervalo_td = datetime.timedelta(minutes=int(intervalo))
+        while h <= fim:
+            View.horario_inserir(h, False, None, None, id)
+            h += intervalo_td

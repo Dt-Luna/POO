@@ -6,17 +6,19 @@ from templates.abrircontaUI import AbrirContaUI
 from templates.loginUI import LoginUI
 from templates.perfilclienteUI import PerfilClienteUI
 from templates.perfilprofissionalUI import PerfilProfissionalUI
-from templates.agendarservicoUI import AgendarServicoUI
+from templates.agendaclienteUI import AgendarServicoUI, MeusServicosUI
+from templates.agendaprofissionalUI import AbrirAgenda, MinhaAgenda
 from views import View
 import streamlit as st
 class IndexUI:
     def menu_admin():
         op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes",
-            "Cadastro de Serviços","Cadastro de Horários", "Cadastro de Profissionais"])
+            "Cadastro de Serviços","Cadastro de Horários", "Cadastro de Profissionais", "Alterar Senha"])
         if op == "Cadastro de Clientes": ManterClienteUI.main()
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
+        if op == "Alterar Senha": 
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Entrar como Cliente", "Entrar como Profissional",
         "Abrir Conta"])
@@ -24,12 +26,15 @@ class IndexUI:
         if op == "Entrar como Profissional": LoginUI.profissional()
         if op == "Abrir Conta": AbrirContaUI.main()
     def menu_cliente():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Agendar Serviço"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Agendar Serviço", "Meus Serviços"])
         if op == "Meus Dados": PerfilClienteUI.main()
         if op == "Agendar Serviço": AgendarServicoUI.main()
+        if op == "Meus Serviços": MeusServicosUI.main()
     def menu_profissional():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Abrir Agenda", "Minha Agenda"])
         if op == "Meus Dados": PerfilProfissionalUI.main()
+        if op == "Abrir Agenda": AbrirAgenda.main()
+        if op == "Minha Agenda": MinhaAgenda.main()
     def sair_do_sistema():
         if st.sidebar.button("Sair"):
             del st.session_state["usuario_id"]
