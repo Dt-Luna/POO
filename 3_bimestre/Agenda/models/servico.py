@@ -1,28 +1,32 @@
 import json
 class Servico:
-    def __init__(self, id, desc, valor):
+    def __init__(self, id, descricao, valor):
         self.set_id(id)
-        self.set_desc(desc)
+        self.set_descricao(descricao)
         self.set_valor(valor)
     
     def set_id(self, id): self.__id = id
-    def set_desc(self, desc): self.__desc = desc
-    def set_valor(self, valor): self.__valor = valor
+    def set_descricao(self, descricao): 
+        if descricao == "": raise ValueError('Descrição Inválida')
+        self.__descricao = descricao
+    def set_valor(self, valor): 
+        if valor < 0: raise ValueError('Valor inválido')
+        self.__valor = valor
 
     def get_id(self): return self.__id
-    def get_desc(self): return self.__desc
+    def get_descricao(self): return self.__descricao
     def get_valor(self): return self.__valor
 
     def to_json(self):
-        dic = {"id":self.__id, "desc":self.__desc, "valor":self.__valor}
+        dic = {"id":self.__id, "descricao":self.__descricao, "valor":self.__valor}
         return dic
     
     @staticmethod
     def from_json(dic):
-        return Servico(dic["id"], dic["desc"], dic["valor"])
+        return Servico(dic["id"], dic["descricao"], dic["valor"])
     
     def __str__(self):
-        return f"{self.__id} - {self.__desc} - {self.__valor}"
+        return f"{self.__id} - {self.__descricao} - {self.__valor}"
     
 class ServicoDAO:
     __objetos = []

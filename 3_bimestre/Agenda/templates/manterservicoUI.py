@@ -25,23 +25,33 @@ class ManterServicoUI:
         desc = st.text_area('Informe a descrição')
         valor = st.number_input('Informe o valor')
         if st.button('Inserir'):
-            servico = View.servico_inserir(desc, valor)
-            st.success('Serviço inserido com sucesso')
-            st.write(servico)
+            try:
+                servico = View.servico_inserir(desc, valor)
+                st.success('Serviço inserido com sucesso')
+                st.write(servico)
+                time.sleep(2)
+                st.rerun()
+            except ValueError as erro:
+                st.error(erro)
             time.sleep(2)
             st.rerun()
-    
+
     def atualizar():
         servicos = View.servico_listar()
         if len(servicos) == 0: st.write('Nenhum serviço cadastrado')
         else:
             op = st.selectbox('Atualização de serviços', servicos)
-            desc = st.text_input('Novo desc', op.get_desc())
-            valor = st.text_input('Novo valor', op.get_valor())
+            desc = st.text_input('Novo desc', op.get_descricao())
+            valor = st.number_input('Novo valor', op.get_valor())
             if st.button('Atualizar'):
-                id = op.get_id()
-                View.servico_atualizar(id, desc, valor)
-                st.success('Serviço atualizado com sucesso')
+                try:
+                    id = op.get_id()
+                    View.servico_atualizar(id, desc, valor)
+                    st.success('Serviço atualizado com sucesso')
+                except ValueError as erro:
+                    st.error(erro)
+                time.sleep(2)
+                st.rerun()
 
     def excluir():
         servicos = View.servico_listar()
@@ -49,7 +59,11 @@ class ManterServicoUI:
         else:
             op = st.selectbox('Exclusão de serviços', servicos)
             if st.button('Excluir'):
-                id = op.get_id()
-                View.servico_excluir(id)
-                st.success('Serviço excluído com sucesso')
-
+                try:
+                    id = op.get_id()
+                    View.servico_excluir(id)
+                    st.success('Serviço excluído com sucesso')
+                except ValueError as erro:
+                    st.error(erro)
+                time.sleep(2)
+                st.rerun()

@@ -9,7 +9,7 @@ class View:
         for c in View.cliente_listar():
             if c.get_email() == "admin": return 
         View.cliente_inserir("admin", "admin", "fone", "1234")
-    def cliente_atualizar_senha_admin():
+    # def cliente_atualizar_senha_admin():
     
     def cliente_autenticar(email, senha):
         for c in View.cliente_listar():
@@ -26,12 +26,31 @@ class View:
         r.sort(key = lambda obj : obj.get_nome())
         return r
     def cliente_inserir(nome, email, fone, senha):
+        for obj in View.cliente_listar():
+            if obj.get_email() == email: raise ValueError('E-mail já cadastrado')
+        for obj in View.profissional_listar():
+            if obj.get_email() == email: raise ValueError('E-mail já cadastrado')
+        if email == 'admin': raise ValueError('E-mail já cadastrado')
         cliente = Cliente(0, nome, email, fone, senha)
-        ClienteDAO.inserir(cliente,)
+        ClienteDAO.inserir(cliente)
     def cliente_atualizar(id, nome, email, fone, senha):
+        if email == 'admin' or any(obj.get_id() != id and obj.get_email() == email for obj in View.cliente_listar() + View.profissional_listar()): raise ValueError('Email já cadastrado')
+        # Nota: o any é como um uma iteração de if's, o que signfica que se qualquer um dos elementos da iteração retornar um valor truthy, ele retorna um valor True
+        ''''
+        isso porém compactado:
+        def meu_any(iterable):
+            for elemento in iterable:
+                if elemento:
+                    return True
+            return False
+        '''
+        # nesse caso específico o parentese depois de 'admin' or é apenas para facilitar a compreensão
+        # + faz com que o obj itere nas duas listas
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     def cliente_excluir(id):
+        for obj in View.horario_listar():
+            if obj.get_id_cliente() == id: raise ValueError('Cliente já agendado, não é possível excluir')
         cliente = Cliente(id, '', '', '', '')
         ClienteDAO.excluir(cliente)
     def cliente_listar_id(id):
@@ -40,15 +59,22 @@ class View:
  
     def servico_listar():
         r = ServicoDAO.listar()
-        r.sort(key = lambda obj : obj.get_desc())
+        r.sort(key = lambda obj : obj.get_descricao())
         return r
-    def servico_inserir(desc, valor):
-        servico = Servico(0, desc, valor)
+    def servico_inserir(descricao, valor):
+        for obj in View.servico_listar():
+            if obj.get_descricao() == descricao:
+                raise ValueError('Serviço já cadastrado')
+        servico = Servico(0, descricao, valor)
         ServicoDAO.inserir(servico)
-    def servico_atualizar(id, desc, valor):
-        servico = Servico(id, desc, valor)
+    def servico_atualizar(id, descricao, valor):
+        for obj in View.servico_listar():
+            if obj.get_id() != id and obj.get_descricao() == descricao: raise ValueError('Descrição já cadastrada em outro serviço')
+        servico = Servico(id, descricao, valor)
         ServicoDAO.atualizar(servico)
     def servico_excluir(id):
+        for obj in View.horario_listar():
+            if obj.get_id_servico() == id: raise ValueError('Serviço já agendado, não é possível excluir')
         servico = Servico(id, "", "" )
         ServicoDAO.excluir(servico)
     def servico_listar_id(id):
@@ -92,13 +118,21 @@ class View:
         r = ProfissionalDAO.listar()
         r.sort(key = lambda obj : obj.get_nome())
         return r
-    def profissional_inserir(nome, especialidade, conselho, email, senha):
+    def profissional_inserir(nome, email, especialidade, conselho, senha):
+        if email == 'admin' or any(email == obj.get_email() for obj in View.cliente_listar() + View.profissional_listar()): raise ValueError('E-mail já cadastrado')
         profissional = Profissional(0, nome, especialidade, conselho, email, senha)
         ProfissionalDAO.inserir(profissional)
-    def profissional_atualizar(id, nome, especialidade, conselho, email, senha):
-        profissional = Profissional(id, nome, especialidade, conselho, email, senha)
+    def profissional_atualizar(id, nome, email, especialidade, conselho, senha):
+        if email == 'admin': raise ValueError('E-mail já cadastrado')
+        for obj in View.cliente_listar():
+            if obj.get_email() == email: raise ValueError('Email já cadastrado')
+        for obj in View.profissional_listar():
+            if obj.get_id() != id and obj.get_email() == email: raise ValueError('Email já cadastrado')
+        profissional = Profissional(id, nome, email, especialidade, conselho, senha)
         ProfissionalDAO.atualizar(profissional)
     def profissional_excluir(id):
+        for obj in View.horario_listar():
+            if obj.get_id_profissional() == id: raise ValueError('Profissional com horário cadastrado, não é possível excluir')
         profissional = Profissional(id, '', '', '', '', '')
         ProfissionalDAO.excluir(profissional)
     def profissional_listar_id(id):

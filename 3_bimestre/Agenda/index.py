@@ -8,6 +8,7 @@ from templates.perfilclienteUI import PerfilClienteUI
 from templates.perfilprofissionalUI import PerfilProfissionalUI
 from templates.agendaclienteUI import AgendarServicoUI, MeusServicosUI
 from templates.agendaprofissionalUI import AbrirAgenda, MinhaAgenda
+from templates.perfiladminUI import PerfilAdminUI
 from views import View
 import streamlit as st
 class IndexUI:
@@ -18,7 +19,7 @@ class IndexUI:
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
-        if op == "Alterar Senha": 
+        if op == "Alterar Senha": PerfilAdminUI.main()
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Entrar como Cliente", "Entrar como Profissional",
         "Abrir Conta"])

@@ -24,14 +24,17 @@ class Profissional:
     def set_id(self, id):
         self.__id = id
     def set_nome(self, nome):
+        if nome == "": raise ValueError('Nome inválido')
         self.__nome = nome
     def set_email(self, email):
+        if email == "": raise ValueError('E-mail inválido')
         self.__email = email
     def set_especialidade(self, especialidade):
         self.__especialidade = especialidade
     def set_conselho(self, conselho):
         self.__conselho = conselho
     def set_senha(self, senha):
+        if senha == "": raise ValueError('Senha inválida')
         self.__senha = senha
 
     def __str__(self):

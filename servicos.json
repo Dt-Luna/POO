@@ -1,1 +1,1 @@
-[{"id": 1, "desc": "Pintura de cabelo", "valor": 200.0}, {"id": 2, "desc": "Dentista", "valor": 50.0}]
+[{"id": 1, "descricao": "Pintura de cabelo", "valor": 200.0}, {"id": 3, "descricao": "Oftamologista", "valor": 100.0}, {"id": 2, "descricao": "Dentista", "valor": 50.0}]
