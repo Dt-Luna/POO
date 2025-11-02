@@ -12,8 +12,13 @@ class AbrirAgenda:
         hora_final = st.time_input("Hora final")
         intervalo = st.number_input("Intervalo (min)", min_value=0, step=5)
         if st.button('Abrir Agenda'):
-            View.profissional_inserir_agenda(st.session_state["usuario_id"], dia, hora_inicial, hora_final, intervalo)
-            st.success('Horários inseridos com sucesso')
+            try:
+                View.profissional_inserir_agenda(st.session_state["usuario_id"], dia, hora_inicial, hora_final, intervalo)
+                st.success('Horários inseridos com sucesso')
+                time.sleep(2)
+                st.rerun()
+            except ValueError as erro:
+                st.error(erro)
             time.sleep(2)
             st.rerun()
             
@@ -40,9 +45,9 @@ class ConfirmarServicoUI:
         if len(horarios) == 0: st.write('Nenhum horário cadastrado')
         else: 
             horario = st.selectbox('Informe o horário', horarios, index=None)
-            cliente = st.selectbox('Cliente', horario.get_id_cliente, index=None)
+            # cliente = st.selectbox('Cliente', horario.get_id_cliente(), index=None)
             if st.button('Confirmar'):
-                horario.set_confirmado(True)
-                st.sucess('Horario confirmado com sucesso')
+                View.horario_atualizar(horario.get_id(), horario.get_data(), True, horario.get_id_cliente(), horario.get_id_servico(), horario.get_id_profissional())
+                st.success('Horario confirmado com sucesso')
                 time.sleep(2)
                 st.rerun()
