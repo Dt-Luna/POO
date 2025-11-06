@@ -23,9 +23,9 @@ class ManterProfissionalUI:
     
     def inserir():
         nome = st.text_input('Informe o nome')
+        email = st.text_input('Informe o email')
         especialidade = st.text_input('Informe a especialidade')
         conselho = st.text_input('Informe o conselho')
-        email = st.text_input('Informe o email')
         senha = st.text_input("Informe a senha", type="password")
         if st.button('Inserir'):
             try:
@@ -53,6 +53,8 @@ class ManterProfissionalUI:
                     id = op.get_id()
                     View.profissional_atualizar(id, nome, email, especialidade, conselho, senha)
                     st.success('Profissional atualizado com sucesso')
+                    time.sleep(2)
+                    st.rerun()
                 except ValueError as erro:
                     st.error(erro)
                 time.sleep(2)

@@ -42,9 +42,13 @@ class ConfirmarServicoUI:
     def main():
         st.header('Confirmar Serviço')
         horarios = View.horario_filtrar_profissional(st.session_state['usuario_id'])
+        horarios_filtrados = []
         if len(horarios) == 0: st.write('Nenhum horário cadastrado')
+        for obj in horarios:
+            if obj.get_id_cliente() != None and obj.get_confirmado() == False: horarios_filtrados.append(obj)
+        if len(horarios_filtrados) == 0: st.write('Nenhum horário a confirmar')
         else: 
-            horario = st.selectbox('Informe o horário', horarios, index=None)
+            horario = st.selectbox('Informe o horário', horarios_filtrados, index=None)
             # cliente = st.selectbox('Cliente', horario.get_id_cliente(), index=None)
             if st.button('Confirmar'):
                 View.horario_atualizar(horario.get_id(), horario.get_data(), True, horario.get_id_cliente(), horario.get_id_servico(), horario.get_id_profissional())

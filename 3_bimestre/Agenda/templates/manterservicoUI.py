@@ -48,6 +48,8 @@ class ManterServicoUI:
                     id = op.get_id()
                     View.servico_atualizar(id, desc, valor)
                     st.success('Serviço atualizado com sucesso')
+                    time.sleep(2)
+                    st.rerun()
                 except ValueError as erro:
                     st.error(erro)
                 time.sleep(2)
@@ -63,6 +65,8 @@ class ManterServicoUI:
                     id = op.get_id()
                     View.servico_excluir(id)
                     st.success('Serviço excluído com sucesso')
+                    time.sleep(2)
+                    st.rerun()
                 except ValueError as erro:
                     st.error(erro)
                 time.sleep(2)

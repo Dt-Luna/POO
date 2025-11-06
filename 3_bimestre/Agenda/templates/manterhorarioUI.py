@@ -77,6 +77,8 @@ class ManterHorarioUI:
                     if profissional != None: profissional = profissional.get_id()
                     View.horario_atualizar(op.get_id(), datetime.strptime(data, "%d/%m/%Y %H:%M"), confirmado, cliente, servico, profissional)
                     st.success('Horário atualizado com sucesso')
+                    time.sleep(2)
+                    st.rerun()
                 except ValueError as erro:
                     st.error(erro)
                 time.sleep(2)

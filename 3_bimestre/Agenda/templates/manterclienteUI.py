@@ -51,6 +51,8 @@ class ManterClienteUI:
                     id = op.get_id()
                     View.cliente_atualizar(id, nome, email, fone, senha)
                     st.success('Cliente atualizado com sucesso')
+                    time.sleep(2)
+                    st.rerun()
                 except ValueError as erro:
                     st.error(erro)
                     time.sleep(2)
