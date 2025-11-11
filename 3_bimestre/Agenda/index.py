@@ -2,6 +2,7 @@ from templates.manterclienteUI import ManterClienteUI
 from templates.manterservicoUI import ManterServicoUI
 from templates.manterhorarioUI import ManterHorarioUI
 from templates.manterprofissional import ManterProfissionalUI
+from templates.manterespecialidadeUI import ManterEspecialidadeUI
 from templates.abrircontaUI import AbrirContaUI
 from templates.loginUI import LoginUI
 from templates.perfilclienteUI import PerfilClienteUI
@@ -14,11 +15,12 @@ import streamlit as st
 class IndexUI:
     def menu_admin():
         op = st.sidebar.selectbox("Menu", ["Cadastro de Clientes",
-            "Cadastro de Serviços","Cadastro de Horários", "Cadastro de Profissionais", "Alterar Senha"])
+            "Cadastro de Serviços","Cadastro de Horários", "Cadastro de Profissionais", "Cadastro de Especialidades", "Alterar Senha"])
         if op == "Cadastro de Clientes": ManterClienteUI.main()
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
+        if op == "Cadastro de Especialidades": ManterEspecialidadeUI.main()
         if op == "Alterar Senha": PerfilAdminUI.main()
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Entrar como Cliente", "Entrar como Profissional",

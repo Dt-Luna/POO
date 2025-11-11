@@ -67,11 +67,13 @@ class ManterHorarioUI:
             id_profissional = None if op.get_id_profissional() in [0, None] else op.get_id_profissional()
             cliente = st.selectbox('Informe o novo cliente', clientes, next((i for i, c in enumerate(clientes) if c.get_id() == id_cliente), None))
             servico = st.selectbox('Informe o novo servico', servicos, next((i for i, s in enumerate(servicos) if s.get_id() == id_servico), None))
-            profissional = st.selectbox('Informe o novo profissional', profissionais, next((i for i, s in enumerate(profissionais) if s.get_id() == id_profissional), None))
+            profs_filtrados = []
+            for obj in profissionais: 
+                if obj.get_id_especialidade() in servico.get_lista_especialidades(): profs_filtrados.append(obj)
+            if len(profs_filtrados) == 0: st.write('Nenhum profissional disponível para esse serviço')
+            profissional = st.selectbox('Informe o novo profissional', profs_filtrados, next((i for i, s in enumerate(profissionais) if s.get_id() == id_profissional), None))
             if st.button('Atualizar'):
                 try:
-                    id_cliente = None
-                    id_servico = None
                     if cliente != None: cliente = cliente.get_id()
                     if servico != None: servico = servico.get_id()
                     if profissional != None: profissional = profissional.get_id()

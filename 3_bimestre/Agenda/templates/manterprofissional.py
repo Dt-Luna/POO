@@ -22,13 +22,15 @@ class ManterProfissionalUI:
             st.dataframe(df)
     
     def inserir():
+        especialidades = View.especialidade_listar()
         nome = st.text_input('Informe o nome')
         email = st.text_input('Informe o email')
-        especialidade = st.text_input('Informe a especialidade')
+        especialidade = st.selectbox('Informe a especialidade', especialidades, index=None)
         conselho = st.text_input('Informe o conselho')
         senha = st.text_input("Informe a senha", type="password")
         if st.button('Inserir'):
             try:
+                if especialidade != None: especialidade = especialidade.get_id()
                 View.profissional_inserir(nome, email, especialidade, conselho, senha)
                 st.success('Profissional inserido com sucesso')
                 time.sleep(2)
@@ -40,16 +42,19 @@ class ManterProfissionalUI:
 
     def atualizar():
         profissionais = View.profissional_listar()
+        especialidades = View.especialidade_listar()
         if len(profissionais) == 0: st.write('Nenhum profissional cadastrado')
         else:
             op = st.selectbox('Atualização de profissionais', profissionais)
             nome = st.text_input('Novo nome', op.get_nome())
             email = st.text_input('Novo email', op.get_email())
-            especialidade = st.text_input('Nova especialidade', op.get_especialidade())
+            id_especialidade = None if op.get_id_especialidade() in [None, 0] else op.get_id_especialidade()
+            especialidade = st.selectbox('Informe a nova especialidade', especialidades)
             conselho = st.text_input('Novo conselho', op.get_conselho())
             senha = st.text_input('Nova senha', op.get_senha())
             if st.button('Atualizar'):
                 try:
+                    if especialidade != None: especialidade = especialidade.get_id()
                     id = op.get_id()
                     View.profissional_atualizar(id, nome, email, especialidade, conselho, senha)
                     st.success('Profissional atualizado com sucesso')

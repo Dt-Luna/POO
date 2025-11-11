@@ -1,7 +1,8 @@
 from models.cliente import Cliente, ClienteDAO
 from models.servico import Servico, ServicoDAO
 from models.horario import Horario, HorarioDAO
-from models.profisional import Profissional, ProfissionalDAO
+from models.profissional import Profissional, ProfissionalDAO
+from models.especialidade import Especialidade, EspecialidadeDAO
 import datetime
 
 class View:
@@ -123,7 +124,8 @@ class View:
             if obj.get_email() == email: raise ValueError('Email já cadastrado')
         for obj in View.profissional_listar():
             if obj.get_email() == email: raise ValueError('Email já cadastrado')
-        profissional = Profissional(0, nome, email, especialidade, conselho, senha)
+        profissional = Profissional(0, nome, email, conselho, senha)
+        profissional.set_id_especialidade(especialidade)
         ProfissionalDAO.inserir(profissional)
     def profissional_atualizar(id, nome, email, especialidade, conselho, senha):
         if email == 'admin': raise ValueError('E-mail já cadastrado')
@@ -131,7 +133,8 @@ class View:
             if obj.get_email() == email: raise ValueError('Email já cadastrado')
         for obj in View.profissional_listar():
             if obj.get_id() != id and obj.get_email() == email: raise ValueError('Email já cadastrado')
-        profissional = Profissional(id, nome, email, especialidade, conselho, senha)
+        profissional = Profissional(id, nome, email, conselho, senha)
+        profissional.set_id_especialidade(especialidade)
         ProfissionalDAO.atualizar(profissional)
     def profissional_excluir(id):
         for obj in View.horario_listar():
@@ -158,3 +161,26 @@ class View:
         while h <= fim:
             View.horario_inserir(h, False, None, None, id)
             h += intervalo_td
+            
+    def especialidade_listar():
+        r = EspecialidadeDAO.listar()
+        r.sort(key = lambda obj : obj.get_nome())
+        return r
+    def especialidade_inserir(nome):
+        for obj in View.especialidade_listar():
+            if obj.get_nome() == nome: raise ValueError('Especialidade já cadastrada')
+        especialidade = Especialidade(0, nome)
+        EspecialidadeDAO.inserir(especialidade)
+    def especialidade_atualizar(id, nome):
+        for obj in View.especialidade_listar():
+            if obj.get_nome() == nome: raise ValueError('Especialidade já cadastrada')
+        especialidade = Especialidade(id, nome)
+        EspecialidadeDAO.atualizar(especialidade)
+    def especialidade_excluir(id):
+        for obj in View.profissional_listar():
+            if obj.get_id_especialidade() == id: raise ValueError('Especialidade já associada a um profissional, não é possível excluir')
+        especialidade = Especialidade(id, 'sem nome')
+        EspecialidadeDAO.excluir(especialidade)
+    def especialidade_listar_id(id):
+        especialidade = EspecialidadeDAO.listar_id(id)
+        return especialidade

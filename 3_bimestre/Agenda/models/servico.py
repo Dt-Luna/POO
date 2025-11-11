@@ -5,6 +5,7 @@ class Servico:
         self.set_id(id)
         self.set_descricao(descricao)
         self.set_valor(valor)
+        self.set_lista_especialidades([])
     
     def set_id(self, id): self.__id = id
     def set_descricao(self, descricao): 
@@ -13,18 +14,22 @@ class Servico:
     def set_valor(self, valor): 
         if valor < 0: raise ValueError('Valor inválido')
         self.__valor = valor
+    def set_lista_especialidades(self, lista):
+        self.__lista_especialidades = lista
 
     def get_id(self): return self.__id
     def get_descricao(self): return self.__descricao
     def get_valor(self): return self.__valor
+    def get_lista_especialidades(self): return self.__lista_especialidades
 
     def to_json(self):
-        dic = {"id":self.__id, "descricao":self.__descricao, "valor":self.__valor}
+        dic = {"id":self.__id, "descricao":self.__descricao, "valor":self.__valor, "especialidades": self.__lista_especialidades}
         return dic
     
     @staticmethod
     def from_json(dic):
-        return Servico(dic["id"], dic["descricao"], dic["valor"])
+        servico = Servico(dic["id"], dic["descricao"], dic["valor"])
+        servico.set_lista_especialidades(dic['especialidades'])
     
     def __str__(self):
         return f"{self.__id} - {self.__descricao} - {self.__valor}"

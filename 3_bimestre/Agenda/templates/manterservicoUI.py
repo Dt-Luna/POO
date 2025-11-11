@@ -5,7 +5,7 @@ from views import View
 
 class ManterServicoUI:
     def main():
-        st.header('Cadastro de Serviçõs')
+        st.header('Cadastro de Serviços')
         tab1, tab2, tab3, tab4, = st.tabs(['Listar', 'Inserir', 'Atualizar', 'Excluir'])
         with tab1: ManterServicoUI.listar()
         with tab2: ManterServicoUI.inserir()
@@ -22,11 +22,14 @@ class ManterServicoUI:
             st.dataframe(df)
 
     def inserir():
+        especialidades = View.especialidade_listar()
         desc = st.text_area('Informe a descrição')
         valor = st.number_input('Informe o valor')
+        espec = st.multiselect('Especialidades capacitadas', especialidades, index=None)
         if st.button('Inserir'):
             try:
-                servico = View.servico_inserir(desc, valor)
+                if espec != None: espec = espec.get_id()
+                servico = View.servico_inserir(desc, valor, espec)
                 st.success('Serviço inserido com sucesso')
                 st.write(servico)
                 time.sleep(2)
